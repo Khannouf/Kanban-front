@@ -36,7 +36,6 @@ export class TasksService {
         const newTask = result.data as TaskModel;
         const currentTasks = this.task() || [];
         this.task.set([...currentTasks, newTask]);
-        console.log("Task created : ", result.data);
       })
     )
   }
@@ -44,10 +43,8 @@ export class TasksService {
   updateTaskStatus(taskId: string, statusId: string) {
     return this.http.patch(`${this.apiUrl}/tasks/${taskId}`, { statusId: statusId }).subscribe(
       (response) => {
-        console.log('Statut mis à jour:', response);
       },
       (error) => {
-        console.error('Erreur lors de la mise à jour:', error);
       }
     );
   }
@@ -61,7 +58,6 @@ export class TasksService {
         if (taskIndex !== -1) {
           currentTasks[taskIndex] = updatedTask;
           this.task.set([...currentTasks]);
-          console.log("Task updated : ", result.data);
         }
       })
     )
@@ -73,7 +69,6 @@ export class TasksService {
         const currentTasks = this.task() || [];
         const updatedTasks = currentTasks.filter(t => t._id !== taskId);
         this.task.set(updatedTasks);
-        console.log("Task deleted : ", result.data.message)
       })
     )
   }
@@ -82,7 +77,6 @@ export class TasksService {
     return this.http.get(this.apiUrl + '/tasks').pipe(
       tap((result: any) => {
         this.task.set(result.data);
-        console.log("TasksService : ", result.data);
       })
     )
   }

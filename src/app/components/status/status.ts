@@ -74,7 +74,6 @@ export class Status implements OnDestroy, AfterViewInit{
   }
 
   editStatus(item: any): void {
-    console.log('Modifier status:', item);
     this.openMenuId = null;
     // TODO: Ajouter la logique de modification
   }
@@ -87,7 +86,6 @@ export class Status implements OnDestroy, AfterViewInit{
       color: item.color,
       order: item.order
     });
-    console.log('Ouverture modal de mise à jour pour le status:', item);
   }
 
   closeUpdateModal(): void {
@@ -105,11 +103,9 @@ export class Status implements OnDestroy, AfterViewInit{
     };
     this.statusService.updateStatus(payload).subscribe({
       next: () => {
-        console.log('Status mis à jour avec succès');
         this.toastr.success('Statut mis à jour avec succès', 'Succès');
       },
       error: (err) => {
-        console.error('Erreur mise à jour:', err);
         this.toastr.error('Erreur lors de la mise à jour du statut', 'Erreur');
       }
     })
@@ -119,15 +115,12 @@ export class Status implements OnDestroy, AfterViewInit{
   }
 
   deleteStatus(statusId: string): void {
-    console.log('Supprimer status:', statusId);
     this.statusService.deleteStatus(statusId).subscribe({
       next: () => {
-        console.log('Status supprimé');
         this.toastr.success('Statut supprimé avec succès', 'Succès');
         this.openMenuId = null;
       },
       error: (err) => {
-        console.error('Erreur suppression:', err);
         this.toastr.error('Erreur lors de la suppression du statut', 'Erreur');
       }
     });
@@ -135,14 +128,11 @@ export class Status implements OnDestroy, AfterViewInit{
 
   onSubmit() {
     if (this.StatusFormGroup.valid){
-      console.log('Status form submitted:', this.StatusFormGroup.value);
       this.statusService.createStatus(this.StatusFormGroup.getRawValue()).subscribe({
         next: () => {
-          console.log("Status created successfully");
           this.toastr.success('Statut créé avec succès', 'Succès');
         },
         error: (err) => {
-          console.error('Erreur création:', err);
           this.toastr.error('Erreur lors de la création du statut', 'Erreur');
         }
       });
@@ -183,11 +173,8 @@ export class Status implements OnDestroy, AfterViewInit{
 
   ngOnInit(): void {
     this.statusService.getStatus().subscribe({
-      next: (data) => {
-        console.log('Status component' , data);
-      },
+      next: () => {},
       error: (err) => {
-        console.error("Error fetching status:", err);
         this.toastr.error('Erreur lors de la récupération des statuts', 'Erreur');
       }
     });

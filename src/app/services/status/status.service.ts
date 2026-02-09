@@ -24,7 +24,6 @@ export class StatusService {
     return this.http.get(this.apiUrl + '/status').pipe(
       tap((result: any) => {
         this.status.set(result.data);
-        console.log("StatusService : ", result.data);
       }),
     );
   }
@@ -35,7 +34,6 @@ export class StatusService {
         const newStatus = result.data as Status;
         const currentStatus = this.status() || [];
         this.status.set([...currentStatus, newStatus]);
-        console.log("Status created : ", result.data);
       })
     )
   }
@@ -48,7 +46,6 @@ export class StatusService {
         this.status.set(
           currentStatus.map((s) => (s._id === updatedStatus._id ? updatedStatus : s))
         );
-        console.log("Status updated : ", updatedStatus);
       })
     );
   }
@@ -58,7 +55,6 @@ export class StatusService {
       tap(() => {
         const currentStatus = this.status() || [];
         this.status.set(currentStatus.filter(s => s._id !== statusId));
-        console.log("Status deleted:", statusId);
       })
     );
   }

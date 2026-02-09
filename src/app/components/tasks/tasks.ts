@@ -90,12 +90,10 @@ export class Tasks {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')) {
       this.taskService.deleteTask(itemId).subscribe({
         next : () => {
-          console.log('Tâche supprimée avec succès');
           this.toastr.success('Tâche supprimée avec succès', 'Succès');
           setTimeout(() => this.closeUpdateTaskModal());
         },
         error: (error) => {
-          console.error('Erreur lors de la suppression de la tâche:', error);
           this.toastr.error('Erreur lors de la suppression de la tâche', 'Erreur');
         },
       })
@@ -123,13 +121,11 @@ export class Tasks {
       })
       .subscribe({
         next: (task) => {
-          console.log('Tâche modifiée avec succès:', task);
           this.toastr.success('Tâche modifiée avec succès', 'Succès');
           this.closeUpdateTaskModal();
           this.updateTaskFormGroup.reset();
         },
         error: (error) => {
-          console.error('Erreur lors de la modification de la tâche:', error);
           this.toastr.error('Erreur lors de la modification de la tâche', 'Erreur');
         },
       });
@@ -149,13 +145,11 @@ export class Tasks {
         })
         .subscribe({
           next: (task) => {
-            console.log('Tâche créée avec succès:', task);
             this.toastr.success('Tâche créée avec succès', 'Succès');
             this.closeTaskModal.emit();
             this.createTaskFormGroup.reset();
           },
           error: (error) => {
-            console.error('Erreur lors de la création de la tâche:', error);
             this.toastr.error('Erreur lors de la création de la tâche', 'Erreur');
           },
         });
@@ -164,11 +158,8 @@ export class Tasks {
 
   ngOnInit(): void {
     this.taskService.getTasks().subscribe({
-      next: (tasks) => {
-        console.log('Tâches récupérées avec succès:', tasks);
-      },
+      next: () => {},
       error: (error) => {
-        console.error('Erreur lors de la récupération des tâches:', error);
         this.toastr.error('Erreur lors de la récupération des tâches', 'Erreur');
       },
     });

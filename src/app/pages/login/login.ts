@@ -45,7 +45,6 @@ export class Login implements OnDestroy{
           this.getUserInformations();
         },
         error: (err) => {
-          console.error("Error fetching user profile:", err);
           this.errorMessage = 'Erreur lors de la récupération du profil utilisateur';
           this.toastr.error('Identifiants invalides', 'Erreur');
           this.isLoading = false;
@@ -67,13 +66,11 @@ export class Login implements OnDestroy{
     const emailControl = this.form.get('email');
     const passwordControl = this.form.get('password');
     if (emailControl?.hasError('email')) {
-      console.error('Erreur email invalide:', emailControl.value);
       this.errorMessage = 'Format d\'email invalide';
       this.isLoading = false;
       return;
     } 
     if (passwordControl?.hasError('strongPassword')) {
-      console.error('Erreur mot de passe faible:', passwordControl.value);
       this.errorMessage = "Le mot de passe ne respecte pas le format requis";
       this.isLoading = false;
       return; 

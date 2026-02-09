@@ -89,7 +89,6 @@ export class Register{
           }
           this.toastr.error(this.errorMessage, 'Erreur');
           this.isLoading = false;
-          console.error('Registration error:', err);
         },
         complete: () => {
           this.isLoading = false;
