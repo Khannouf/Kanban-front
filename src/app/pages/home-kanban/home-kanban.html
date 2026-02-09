@@ -1,0 +1,69 @@
+
+  <div class="flex h-screen flex-col bg-gray-950 text-white">
+
+    <div class="absolute top-10 left-10 w-32 h-32 bg-blue-300 rounded-full opacity-20 blur-3xl"></div>
+  <div class="absolute top-1/3 right-20 w-40 h-40 bg-purple-300 rounded-full opacity-20 blur-3xl"></div>
+  <div class="absolute bottom-20 left-1/4 w-36 h-36 bg-pink-300 rounded-full opacity-20 blur-3xl"></div>
+  <div class="absolute bottom-10 right-10 w-48 h-48 bg-yellow-300 rounded-full opacity-20 blur-3xl"></div>
+  <div class="absolute top-1/2 left-1/2 w-44 h-44 bg-green-300 rounded-full opacity-20 blur-3xl"></div>
+
+    @let currentUser = user();
+    @if (currentUser) {
+      <nav
+        class="flex shrink-0 items-center rounded-lg border border-gray-200 bg-gray-950 text-white px-4 py-3 m-4"
+      >
+        <div class="font-semibold ">Bienvenue {{ currentUser.name }}</div>
+        <div class="flex-1 justify-end flex gap-4">
+          <button
+            class="rounded-md border-2 border-green-500 bg-gray-950 px-3 py-2 text-white hover:border-green-600 hover:bg-green-900"
+            type="button"
+            (click)="openTaskModal()"
+          >
+            Nouvelle Taches
+          </button>
+          <button
+            class="rounded-md border-2 border-green-500 bg-gray-950 px-3 py-2 text-white hover:border-green-600 hover:bg-green-900"
+            type="button"
+            (click)="openCatModal()"
+          >
+            Nouvelle Catégorie
+          </button>
+          <button
+            class="rounded-md border border-red-500 bg-gray-950 px-3 py-2 text-white hover:border-red-600 hover:bg-red-900"
+            type="button"
+            (click)="logout()"
+          >
+            <mat-icon>logout</mat-icon>
+          </button>
+        </div>
+      </nav>
+  
+      <div class="flex flex-1 overflow-hidden gap-4 px-4">
+        <!-- <div class="w-96 border-l pl-4 overflow-y-auto">
+          <h2 class="text-xl font-semibold mb-4">Tâches</h2>
+          <div class="mb-4"> -->
+            <app-tasks [isTaskModalOpen]="isTaskModalOpen" (closeTaskModal)="closeTaskModal()"></app-tasks>
+          <!-- </div>
+        </div> -->
+        <div class="flex-1 overflow-hidden">
+          <app-status
+            [isCatModalOpen]="isCatModalOpen"
+            (closeCatModal)="closeCatModal()"
+            (editTask)="onEditTask($event)"
+          ></app-status>
+        </div>
+      </div>
+    } @else {
+      <p class="text-center text-gray-600">
+        Veuillez vous connecter pour accéder à votre tableau Kanban.
+      </p>
+      <a
+        routerLink="/login"
+        class="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition duration-200 shadow-lg hover:shadow-xl"
+      >
+        Se connecter
+      </a>
+    }
+  </div>
+
+
