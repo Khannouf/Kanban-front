@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs/internal/operators/tap';
 import { Status } from '../../models/status.model';
+import { environment } from '../../../environments/environment';
 
 interface CreateStatusCredentials {
   name: string;
@@ -13,14 +14,14 @@ interface CreateStatusCredentials {
 })
 export class StatusService {
   private http = inject(HttpClient);
-  private BASE_URL = '/api';
+  private readonly apiUrl = environment.apiUrl;
 
   status = signal<Status[] | null | undefined>(undefined);
 
   constructor() {}
 
   getStatus() {
-    return this.http.get(this.BASE_URL + '/status').pipe(
+    return this.http.get(this.apiUrl + '/status').pipe(
       tap((result: any) => {
         this.status.set(result.data);
         console.log("StatusService : ", result.data);
@@ -29,7 +30,7 @@ export class StatusService {
   }
 
   createStatus(credentials: CreateStatusCredentials) {
-    return this.http.post(this.BASE_URL + '/status', credentials).pipe(
+    return this.http.post(this.apiUrl + '/status', credentials).pipe(
       tap((result: any) => {
         const newStatus = result.data as Status;
         const currentStatus = this.status() || [];
@@ -40,7 +41,7 @@ export class StatusService {
   }
 
   updateStatus(credentials: Status) {
-    return this.http.patch(`${this.BASE_URL}/status/${credentials._id}`, credentials).pipe(
+    return this.http.patch(`${this.apiUrl}/status/${credentials._id}`, credentials).pipe(
       tap((result: any) => {
         const updatedStatus = result.data as Status;
         const currentStatus = this.status() || [];
@@ -53,7 +54,7 @@ export class StatusService {
   }
 
   deleteStatus(statusId: string) {
-    return this.http.delete(`${this.BASE_URL}/status/${statusId}`).pipe(
+    return this.http.delete(`${this.apiUrl}/status/${statusId}`).pipe(
       tap(() => {
         const currentStatus = this.status() || [];
         this.status.set(currentStatus.filter(s => s._id !== statusId));

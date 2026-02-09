@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { TaskModel } from '../../models/task.model';
 import { tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface CreateTask {
   name: string;
@@ -17,7 +18,7 @@ export interface CreateTask {
 export class TasksService {
 
   private http = inject(HttpClient)
-  private BASE_URL = '/api';
+  private readonly apiUrl = environment.apiUrl;
 
   constructor() { }
 
@@ -30,7 +31,7 @@ export class TasksService {
 }
 
   createTask(credentials: CreateTask) {
-    return this.http.post(this.BASE_URL + '/tasks', credentials).pipe(
+    return this.http.post(this.apiUrl + '/tasks', credentials).pipe(
       tap((result: any) => {
         const newTask = result.data as TaskModel;
         const currentTasks = this.task() || [];
@@ -41,7 +42,7 @@ export class TasksService {
   }
 
   updateTaskStatus(taskId: string, statusId: string) {
-    return this.http.patch(`${this.BASE_URL}/tasks/${taskId}`, { statusId: statusId }).subscribe(
+    return this.http.patch(`${this.apiUrl}/tasks/${taskId}`, { statusId: statusId }).subscribe(
       (response) => {
         console.log('Statut mis à jour:', response);
       },
@@ -52,7 +53,7 @@ export class TasksService {
   }
 
   updateTask(taskId: string, credentials: CreateTask) {
-    return this.http.patch(`${this.BASE_URL}/tasks/${taskId}`, credentials).pipe(
+    return this.http.patch(`${this.apiUrl}/tasks/${taskId}`, credentials).pipe(
       tap((result: any) => {
         const updatedTask = result.data as TaskModel;
         const currentTasks = this.task() || [];
@@ -67,7 +68,7 @@ export class TasksService {
   }
 
   deleteTask(taskId: string) {
-    return this.http.delete(`${this.BASE_URL}/tasks/${taskId}`).pipe(
+    return this.http.delete(`${this.apiUrl}/tasks/${taskId}`).pipe(
       tap((result: any) => {
         const currentTasks = this.task() || [];
         const updatedTasks = currentTasks.filter(t => t._id !== taskId);
@@ -78,7 +79,7 @@ export class TasksService {
   }
 
   getTasks() {
-    return this.http.get(this.BASE_URL + '/tasks').pipe(
+    return this.http.get(this.apiUrl + '/tasks').pipe(
       tap((result: any) => {
         this.task.set(result.data);
         console.log("TasksService : ", result.data);

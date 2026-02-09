@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../../models/user.model';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface LoginCredentials {
   email: string;
@@ -13,7 +14,7 @@ export interface LoginCredentials {
 })
 export class Login {
   private http = inject(HttpClient);
-  private BASE_URL = '/api';
+  private readonly apiUrl = environment.apiUrl;
 
   user = signal<User | null | undefined>(undefined);
 
@@ -32,13 +33,13 @@ export class Login {
   }
 
   login(credentials: LoginCredentials): Observable<User> {
-    return this.http.post(this.BASE_URL + '/users/login', credentials).pipe(tap((result: any) => {
+    return this.http.post(this.apiUrl + '/users/login', credentials).pipe(tap((result: any) => {
       localStorage.setItem('token', result.token);
     }));
   }
 
   getCurrentUser() {
-    return this.http.get(this.BASE_URL + '/users/profile').pipe(
+    return this.http.get(this.apiUrl + '/users/profile').pipe(
       tap((result: any) => {
         const user = Object.assign(new User(), result.data);
         this.user.set(user);
